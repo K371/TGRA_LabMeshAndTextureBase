@@ -10,10 +10,12 @@ public class Maze {
 	public static int width;
 	public static int height;
 	Shader shader;
-	Texture tex;
+	Texture tex, grass;
 	
 	public Maze(int width, int height){
 		tex = new Texture(Gdx.files.internal("textures/fence.png"));
+		grass = new Texture(Gdx.files.internal("textures/grass.png"));
+		
 		shader = new Shader();
 		Maze.width = width;
 		Maze.height = height;
@@ -65,14 +67,15 @@ public class Maze {
 	public void drawMaze(){
 		ModelMatrix.main.pushMatrix();
 		
-		//floor
 		
+		//floor
+		ModelMatrix.main.pushMatrix();
 		shader.setMaterialDiffuse(0.2f, 0.75f, 0.2f, 1.0f);
 		ModelMatrix.main.pushMatrix();
-		ModelMatrix.main.addTranslation(0, -50f, 0);
+		ModelMatrix.main.addTranslation(0, -49.8f, 0);
 		ModelMatrix.main.addScale(50, 100f, 50f);
 		shader.setModelMatrix(ModelMatrix.main.getMatrix());
-		BoxGraphic.drawSolidCube(shader, null);
+		BoxGraphic.drawSolidCube(shader, grass);
 		ModelMatrix.main.popMatrix();
 		
 		shader.setMaterialDiffuse(0.2f, 0.2f, 0.2f, 1.0f);

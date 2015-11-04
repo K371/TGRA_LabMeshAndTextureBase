@@ -122,6 +122,7 @@ public class Projectile {
 	}
 	
 	public void drawProjectile(Shader shader, MeshModel model){
+		float dt = Gdx.graphics.getDeltaTime();
 		ModelMatrix.main.pushMatrix();
 			ModelMatrix.main.addTranslation(x, y, z);
 			ModelMatrix.main.addRotationY(rotation);
@@ -137,31 +138,24 @@ public class Projectile {
 				
 			ModelMatrix.main.addScale(0.1f, 0.1f, 0.1f);
 			
-			move -=0.1f;
+			move -= dt * 4;
 			
 			if(pigeon && !hit){
 				ModelMatrix.main.addScale(1f, 3f, 1f);
 				ModelMatrix.main.addRotationX(90);
-				shader.setMaterialDiffuse(1.0f, 0.657f, 0.0f, 1.0f);
-				
-				shader.setMaterialEmission(1.0f, 0.657f, 0.0f, 1.0f);
-				shader.setMaterialSpecular(1.0f, 0.657f, 0.0f, 1.0f);
-							
 				Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 1.0f, 0.647f, 0.0f, 1.0f);
 				pitch -= 0.18f;
 				
 				shader.setModelMatrix(ModelMatrix.main.getMatrix());
 				model.draw(shader);
-				shader.setMaterialDiffuse(0.2f, 0.2f, 0.2f, 1.0f);
+				
 				
 			}
 			else if(!pigeon){
-				shader.setMaterialDiffuse(0.0f, 0f, 0.0f, 1.0f);
-				shader.setMaterialEmission(0.0f, 0.0f, 0.0f, 1.0f);
-				shader.setMaterialSpecular(0.0f, 0.0f, 0.0f, 1.0f);
+				Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 0.0f, 0.0f, 0.0f, 1.0f);
 				ModelMatrix.main.pushMatrix();
 				ModelMatrix.main.addTranslation(0, 0, -4f);
-				move -=0.75f;
+				move -= dt * 20;
 				boolean negative;
 				boolean negative2;
 				int sign = 1;
@@ -189,10 +183,12 @@ public class Projectile {
 					ModelMatrix.main.popMatrix();
 				}
 				ModelMatrix.main.popMatrix();
-				Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 0.8f, 0.3f, 0.5f, 1.0f);
+				
 				
 				
 			}
+			
+			Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 1.0f, 1.0f, 1.0f, 1.0f);
 			
 			
 		

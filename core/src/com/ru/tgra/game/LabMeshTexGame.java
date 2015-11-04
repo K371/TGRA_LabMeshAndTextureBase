@@ -47,7 +47,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 	
 	private float fov = 110.0f;
 
-	private Texture tex;
+	private Texture tex, sky;
 	
 	Random rand = new Random();
 	
@@ -70,7 +70,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 	public void create () {
 		
 		reloadAngle = 0;
-		reloadTime = System.currentTimeMillis();
+		reloadTime = 0;
 		ammo = 2;
 		
 		r = new Random();
@@ -92,6 +92,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 		shader = new Shader();
 
 		tex = new Texture(Gdx.files.internal("textures/dice.png"));
+		sky = new Texture(Gdx.files.internal("textures/y.png"));
 		
 		maze = new Maze(15, 15);
 
@@ -227,9 +228,61 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 		}
 		
 		cam.rotateY(changeX);
-		cam.pitch(changeY);	
+		cam.pitch(changeY);
 		
-		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+		
+		
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
+			Projectile projectile = new Projectile();
+			projectile.setX(1.5f);
+			projectile.setY(0.55f);
+			projectile.setZ(-6);
+			projectile.setPitch(40+r.nextFloat()*10);
+			projectile.setRotation(-85-r.nextFloat()*10);
+			projectile.setPigeon(true);
+			projectiles.add(projectile);
+			
+		}
+		
+		
+		
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)){
+			Projectile projectile = new Projectile();
+			projectile.setX(13);
+			projectile.setY(0.55f);
+			projectile.setZ(-6);
+			projectile.setPitch(45+r.nextFloat()*10);
+			projectile.setRotation(85-r.nextFloat()*10);
+			projectile.setPigeon(true);
+			projectiles.add(projectile);
+			
+		}
+		
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)){
+			Projectile projectile = new Projectile();
+			projectile.setX(7);
+			projectile.setY(0.55f);
+			projectile.setZ(-13);
+			projectile.setPitch(45+r.nextFloat()*10);
+			projectile.setRotation(-180-r.nextFloat()*10);
+			projectile.setPigeon(true);
+			projectiles.add(projectile);
+			
+		}
+		
+		if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)){
+			Projectile projectile = new Projectile();
+			projectile.setX(6);
+			projectile.setY(0.05f);
+			projectile.setZ(-4);
+			projectile.setPitch(45+r.nextFloat()*10);
+			projectile.setRotation(25-r.nextInt(50));
+			projectile.setPigeon(true);
+			projectiles.add(projectile);
+			
+		}
+		
+		/*if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
 			Projectile projectile = new Projectile();
 			projectile.setX(0);
 			projectile.setY(0);
@@ -239,17 +292,105 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			projectile.setPigeon(true);
 			projectiles.add(projectile);
 			Projectile projectile2 = new Projectile();
-			projectile2.setX(10);
+			projectile2.setX(15);
 			projectile2.setY(0);
-			projectile2.setZ(0);
+			projectile2.setZ(-2);
 			projectile2.setPitch(45 + r.nextFloat()*10);
-			projectile2.setRotation(50-r.nextFloat()*10);
+			projectile2.setRotation(80-r.nextFloat()*10);
 			projectile2.setPigeon(true);
 			projectiles.add(projectile2);
 			
-		}
+		}*/
 		//do all updates to the game
 	}
+	
+	private void drawThrowers(){
+		/* 1 */
+		ModelMatrix.main.pushMatrix();
+		ModelMatrix.main.addTranslation(1.5f, 0.5f, -6);
+		ModelMatrix.main.addRotationY(-85);
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, null);
+			ModelMatrix.main.popMatrix();
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addTranslation(0, 0.4f, 0);
+				ModelMatrix.main.addRotationX(35);
+				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, null);
+			ModelMatrix.main.popMatrix();
+		
+		ModelMatrix.main.popMatrix();
+		
+		/* 2 */
+		ModelMatrix.main.pushMatrix();
+		ModelMatrix.main.addTranslation(13, 0.5f, -6);
+		ModelMatrix.main.addRotationY(85);
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, null);
+			ModelMatrix.main.popMatrix();
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addTranslation(0, 0.4f, 0);
+				ModelMatrix.main.addRotationX(35);
+				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, null);
+			ModelMatrix.main.popMatrix();
+		
+		ModelMatrix.main.popMatrix();
+		
+		/* 3 */
+		ModelMatrix.main.pushMatrix();
+		ModelMatrix.main.addTranslation(7, 0.5f, -13);
+		ModelMatrix.main.addRotationY(180);
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, null);
+			ModelMatrix.main.popMatrix();
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addTranslation(0, 0.4f, 0);
+				ModelMatrix.main.addRotationX(35);
+				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, null);
+			ModelMatrix.main.popMatrix();
+		
+		ModelMatrix.main.popMatrix();
+		
+		/* 4 */
+		ModelMatrix.main.pushMatrix();
+		ModelMatrix.main.addTranslation(6, 0.1f, -4);
+		ModelMatrix.main.addRotationY(0);
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, null);
+			ModelMatrix.main.popMatrix();
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addTranslation(0, 0.4f, 0);
+				ModelMatrix.main.addRotationX(35);
+				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, null);
+			ModelMatrix.main.popMatrix();
+		
+		ModelMatrix.main.popMatrix();
+		
+	}
+	
 	private void display()
 	{
 		//do all actual drawing and rendering here
@@ -328,7 +469,11 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			shader.setModelMatrix(ModelMatrix.main.getMatrix());
 			SphereGraphic.drawSolidSphere(shader, null, null);
 			ModelMatrix.main.popMatrix();
+		
+			drawThrowers();
 			
+			
+			Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 0.1f, 0.1f, 0.1f, 1.0f);
 			if(System.currentTimeMillis() - reloadTime > 3000){
 				/* Barrel */
 				ModelMatrix.main.pushMatrix();
@@ -376,6 +521,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			}
 			
 			/* Ammo */
+		
 			ModelMatrix.main.pushMatrix();
 			ModelMatrix.main.addTranslation(cam.eye.x, cam.eye.y, cam.eye.z);
 			ModelMatrix.main.addRotationY(leftAngle);
@@ -387,6 +533,12 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 				ModelMatrix.main.pushMatrix();
 				ModelMatrix.main.addScale(0.005f, 0.25f, 0.005f);
 				ModelMatrix.main.addRotationX(90);
+				Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 1.0f, 0.0f, 0.0f, 1.0f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				model.draw(shader);
+				ModelMatrix.main.addScale(1.1f, 1.1f,0.25f);
+				ModelMatrix.main.addTranslation(0, 0, -0.3f);
+				Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 1.0f, 0.647f, 0.0f, 1.0f);
 				shader.setModelMatrix(ModelMatrix.main.getMatrix());
 				model.draw(shader);
 				ModelMatrix.main.popMatrix();
@@ -432,6 +584,13 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 					break;
 				}
 			}
+			
+			ModelMatrix.main.pushMatrix();
+			ModelMatrix.main.addTranslation(7, 0, -7);
+			ModelMatrix.main.addScale(100, 100f, 100f);
+			shader.setModelMatrix(ModelMatrix.main.getMatrix());
+			BoxGraphic.drawSolidCube(shader, sky);
+			ModelMatrix.main.popMatrix();
 			
 			shader.setGlobalAmbient(0.2f, 0.2f, 0.0f, 1);
 			shader.setMaterialDiffuse(0.3f, 0.3f, 0.3f, 1.0f);

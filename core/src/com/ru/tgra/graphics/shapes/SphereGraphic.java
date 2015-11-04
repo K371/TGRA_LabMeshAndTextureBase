@@ -54,7 +54,7 @@ public class SphereGraphic {
 	public static void drawSolidSphere(Shader shader, Texture diffuseTexture, Texture specularTexture) {
 
 		shader.setDiffuseTexture(diffuseTexture);
-
+		
 		Gdx.gl.glVertexAttribPointer(shader.getVertexPointer(), 3, GL20.GL_FLOAT, false, 0, vertexBuffer);
 		Gdx.gl.glVertexAttribPointer(shader.getNormalPointer(), 3, GL20.GL_FLOAT, false, 0, normalBuffer);
 		//Gdx.gl.glVertexAttribPointer(shader.getUVPointer(), 2, GL20.GL_FLOAT, false, 0, uvBuffer);
