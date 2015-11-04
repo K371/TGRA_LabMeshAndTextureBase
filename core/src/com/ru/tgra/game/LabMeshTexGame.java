@@ -81,6 +81,8 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 		projectiles = new ArrayList<Projectile>();
 		leftAngle = 315;
 		upAngle = 0;
+		
+		//Input processor
 
 		Gdx.input.setInputProcessor(this);
 
