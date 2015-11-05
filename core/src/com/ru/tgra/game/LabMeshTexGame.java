@@ -42,7 +42,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 	
 	private float fov = 110.0f;
 
-	private Texture sky, marked, camo;
+	private Texture sky, marked, camo, orange, red, gray;
 	
 	Random rand = new Random();
 	
@@ -88,6 +88,9 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 		sky = new Texture(Gdx.files.internal("textures/y.png"));
 		marked = new Texture(Gdx.files.internal("textures/fencemarked.jpg"));
 		camo = new Texture(Gdx.files.internal("textures/camo.png"));
+		orange =  new Texture(Gdx.files.internal("textures/g.png"));
+		red = new Texture(Gdx.files.internal("textures/red.png"));
+		gray = new Texture(Gdx.files.internal("textures/gray.png"));
 	
 		
 		maze = new Maze(15, 15);
@@ -400,10 +403,10 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 				
 				ModelMatrix.main.addScale(0.15f, 0.15f, 0.3f);
 				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				shotgun.draw(shader);
+				shotgun.draw(shader, gray);
 				ModelMatrix.main.addTranslation(0.0f, -0.2f, 0f);
 				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				shotgun.draw(shader);
+				shotgun.draw(shader, gray);
 				
 				ModelMatrix.main.popMatrix();
 				reloadAngle = 0;
@@ -427,10 +430,10 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 				
 				ModelMatrix.main.addScale(0.15f, 0.15f, 0.3f);
 				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				shotgun.draw(shader);
+				shotgun.draw(shader, gray);
 				ModelMatrix.main.addTranslation(0.0f, -0.2f, 0f);
 				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				shotgun.draw(shader);
+				shotgun.draw(shader, gray);
 				
 				ModelMatrix.main.popMatrix();
 			}
@@ -448,14 +451,14 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 				ModelMatrix.main.pushMatrix();
 				ModelMatrix.main.addScale(0.005f, 0.25f, 0.005f);
 				ModelMatrix.main.addRotationX(90);
-				Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 1.0f, 0.0f, 0.0f, 1.0f);
+				//Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 1.0f, 0.0f, 0.0f, 1.0f);
 				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				model.draw(shader);
+				model.draw(shader, red);
 				ModelMatrix.main.addScale(1.1f, 1.1f,0.25f);
 				ModelMatrix.main.addTranslation(0, 0, -0.3f);
-				Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 1.0f, 0.647f, 0.0f, 1.0f);
+				//Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 1.0f, 0.647f, 0.0f, 1.0f);
 				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				model.draw(shader);
+				model.draw(shader, orange);
 				ModelMatrix.main.popMatrix();
 				ModelMatrix.main.addTranslation(0.02f, 0, 0);
 			}
@@ -463,7 +466,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			Gdx.gl.glUniform4f(colorLoc, 1.0f, 1.0f, 1.0f, 1.0f);
 
 			for(Projectile p : projectiles){
-				p.drawProjectile(shader, model);
+				p.drawProjectile(shader, model, orange);
 			}
 			
 			for(int i = 0; i < projectiles.size(); i++){

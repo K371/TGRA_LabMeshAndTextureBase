@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleController;
 import com.ru.tgra.graphics.Material;
 import com.ru.tgra.graphics.ModelMatrix;
@@ -23,7 +24,8 @@ public class MeshModel {
 		nodes = new Vector<MeshModelNode>();
 	}
 
-	public void draw(Shader shader) {
+	public void draw(Shader shader, Texture tex) {
+		shader.setDiffuseTexture(tex);
 
 		for(MeshModelNode node : nodes)
 		{

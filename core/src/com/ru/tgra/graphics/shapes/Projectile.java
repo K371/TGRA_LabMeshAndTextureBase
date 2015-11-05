@@ -3,6 +3,7 @@ package com.ru.tgra.graphics.shapes;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.ru.tgra.game.LabMeshTexGame;
 import com.ru.tgra.graphics.ModelMatrix;
@@ -121,7 +122,7 @@ public class Projectile {
 		return Math.sqrt(v.dst2(v2));
 	}
 	
-	public void drawProjectile(Shader shader, MeshModel model){
+	public void drawProjectile(Shader shader, MeshModel model, Texture tex){
 		float dt = Gdx.graphics.getDeltaTime();
 		ModelMatrix.main.pushMatrix();
 			ModelMatrix.main.addTranslation(x, y, z);
@@ -143,11 +144,15 @@ public class Projectile {
 			if(pigeon && !hit){
 				ModelMatrix.main.addScale(1f, 3f, 1f);
 				ModelMatrix.main.addRotationX(90);
-				Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 1.0f, 0.647f, 0.0f, 1.0f);
+				//Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 1.0f, 0.647f, 0.0f, 1.0f);
+				shader.setMaterialDiffuse(0.9f, 0.9f, 0.9f, 1.0f);
+				shader.setMaterialSpecular(0.5f, 0.5f, 0.5f, 1.0f);
+				shader.setMaterialEmission(0.1f, 0.1f, 0.1f, 1.0f);
+				
 				pitch -= 0.18f;
 				
 				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				model.draw(shader);
+				model.draw(shader, tex);
 				
 				
 			}
