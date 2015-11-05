@@ -85,9 +85,9 @@ public class Maze {
 		BoxGraphic.drawSolidCube(shader, grass);
 		ModelMatrix.main.popMatrix();
 		
-		shader.setMaterialDiffuse(0.7f, 0.7f, 0.7f, 1.0f);
+		shader.setMaterialDiffuse(0.9f, 0.9f, 0.9f, 1.0f);
 		shader.setMaterialSpecular(0.5f, 0.5f, 0.5f, 1.0f);
-		shader.setMaterialEmission(0.2f, 0.2f, 0.2f, 1.0f);
+		shader.setMaterialEmission(0.1f, 0.1f, 0.1f, 1.0f);
 		ModelMatrix.main.addTranslation(0,1,0);
 		for(int i = 0; i < width; i++){
 			ModelMatrix.main.pushMatrix();
