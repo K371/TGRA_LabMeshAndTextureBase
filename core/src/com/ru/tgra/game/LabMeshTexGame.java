@@ -11,11 +11,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
 import com.ru.tgra.graphics.*;
 import com.ru.tgra.graphics.shapes.*;
 import com.ru.tgra.graphics.shapes.g3djmodel.G3DJModelLoader;
@@ -35,26 +32,22 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 	private float angle;
 	private float leftAngle;
 	private float upAngle;
-	private float objectRotationAngle;
-	private float objectPitchAngle;
 	private float reloadAngle;
 	
 	public static int colorLoc;
 
 	private Camera cam;
-	private Camera topCam;
 	private ArrayList<Projectile> projectiles;
 	
 	private float fov = 110.0f;
 
-	private Texture tex, sky, marked;
+	private Texture sky, marked, camo;
 	
 	Random rand = new Random();
 	
 	private Maze maze;
 	
 	private boolean justPressed;
-	private boolean oldJustPressed;
 	
 	private Sound sound;
 	private Sound clayBreak;
@@ -76,9 +69,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 		
 		r = new Random();
 		
-		
 		justPressed = false;
-		oldJustPressed = false;
 		projectiles = new ArrayList<Projectile>();
 		leftAngle = 315;
 		upAngle = 0;
@@ -92,9 +83,10 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 
 		shader = new Shader();
 
-		tex = new Texture(Gdx.files.internal("textures/dice.png"));
 		sky = new Texture(Gdx.files.internal("textures/y.png"));
 		marked = new Texture(Gdx.files.internal("textures/fencemarked.jpg"));
+		camo = new Texture(Gdx.files.internal("textures/camo.png"));
+	
 		
 		maze = new Maze(15, 15);
 
@@ -113,27 +105,12 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 
 		cam = new Camera();
 		cam.look(new Point3D(1.5f, 1f, -0.5f), new Point3D(2.5f,1,-1.5f), new Vector3D(0,1,0));
-
-		topCam = new Camera();
-		//orthoCam.orthographicProjection(-5, 5, -5, 5, 3.0f, 100);
-		//topCam.perspectiveProjection(30.0f, 1, 3, 100);
 		
 		Gdx.input.setCursorCatched(true);
 		sound = Gdx.audio.newSound(Gdx.files.internal("ShotgunBoom.mp3"));
 		clayBreak = Gdx.audio.newSound(Gdx.files.internal("ClayBreaking.mp3"));
 		thrower = Gdx.audio.newSound(Gdx.files.internal("Thrower.mp3"));
 		reload = Gdx.audio.newSound(Gdx.files.internal("reload2.mp3"));
-
-		//TODO: try this way to create a texture image
-		/*Pixmap pm = new Pixmap(128, 128, Format.RGBA8888);
-		for(int i = 0; i < pm.getWidth(); i++)
-		{
-			for(int j = 0; j < pm.getWidth(); j++)
-			{
-				pm.drawPixel(i, j, rand.nextInt());
-			}
-		}
-		tex = new Texture(pm);*/
 
 	}
 
@@ -198,7 +175,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 				projectile.setPitch(upAngle);
 				projectile.setRotation(leftAngle);
 				projectiles.add(projectile);
-				sound.play(1);
+				sound.setVolume(sound.play(1), 0.5f);
 				if(ammo == 0){
 					reloadTime = currTime;
 					reload.play(1);
@@ -310,92 +287,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 		//do all updates to the game
 	}
 	
-	private void drawThrowers(){
-		/* 1 */
-		ModelMatrix.main.pushMatrix();
-		ModelMatrix.main.addTranslation(1.5f, 0.5f, -6);
-		ModelMatrix.main.addRotationY(-85);
-			
-			ModelMatrix.main.pushMatrix();
-				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
-				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				BoxGraphic.drawSolidCube(shader, null);
-			ModelMatrix.main.popMatrix();
-			
-			ModelMatrix.main.pushMatrix();
-				ModelMatrix.main.addTranslation(0, 0.4f, 0);
-				ModelMatrix.main.addRotationX(35);
-				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
-				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				BoxGraphic.drawSolidCube(shader, null);
-			ModelMatrix.main.popMatrix();
-		
-		ModelMatrix.main.popMatrix();
-		
-		/* 2 */
-		ModelMatrix.main.pushMatrix();
-		ModelMatrix.main.addTranslation(13, 0.5f, -6);
-		ModelMatrix.main.addRotationY(85);
-			
-			ModelMatrix.main.pushMatrix();
-				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
-				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				BoxGraphic.drawSolidCube(shader, null);
-			ModelMatrix.main.popMatrix();
-			
-			ModelMatrix.main.pushMatrix();
-				ModelMatrix.main.addTranslation(0, 0.4f, 0);
-				ModelMatrix.main.addRotationX(35);
-				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
-				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				BoxGraphic.drawSolidCube(shader, null);
-			ModelMatrix.main.popMatrix();
-		
-		ModelMatrix.main.popMatrix();
-		
-		/* 3 */
-		ModelMatrix.main.pushMatrix();
-		ModelMatrix.main.addTranslation(7, 0.5f, -13);
-		ModelMatrix.main.addRotationY(180);
-			
-			ModelMatrix.main.pushMatrix();
-				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
-				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				BoxGraphic.drawSolidCube(shader, null);
-			ModelMatrix.main.popMatrix();
-			
-			ModelMatrix.main.pushMatrix();
-				ModelMatrix.main.addTranslation(0, 0.4f, 0);
-				ModelMatrix.main.addRotationX(35);
-				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
-				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				BoxGraphic.drawSolidCube(shader, null);
-			ModelMatrix.main.popMatrix();
-		
-		ModelMatrix.main.popMatrix();
-		
-		/* 4 */
-		ModelMatrix.main.pushMatrix();
-		ModelMatrix.main.addTranslation(6, 0.1f, -4);
-		ModelMatrix.main.addRotationY(0);
-			
-			ModelMatrix.main.pushMatrix();
-				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
-				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				BoxGraphic.drawSolidCube(shader, null);
-			ModelMatrix.main.popMatrix();
-			
-			ModelMatrix.main.pushMatrix();
-				ModelMatrix.main.addTranslation(0, 0.4f, 0);
-				ModelMatrix.main.addRotationX(35);
-				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
-				shader.setModelMatrix(ModelMatrix.main.getMatrix());
-				BoxGraphic.drawSolidCube(shader, null);
-			ModelMatrix.main.popMatrix();
-		
-		ModelMatrix.main.popMatrix();
-		
-	}
+	
 	
 	private void display()
 	{
@@ -476,7 +368,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			SphereGraphic.drawSolidSphere(shader, null, null);
 			ModelMatrix.main.popMatrix();
 		
-			drawThrowers();
+			
 			
 			
 			Gdx.gl.glUniform4f(LabMeshTexGame.colorLoc, 0.1f, 0.1f, 0.1f, 1.0f);
@@ -609,6 +501,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			BoxGraphic.drawSolidCube(shader, marked);
 			ModelMatrix.main.popMatrix();
 			
+			drawThrowers();
 			
 			shader.setGlobalAmbient(0.2f, 0.2f, 0.0f, 1);
 			shader.setMaterialDiffuse(0.3f, 0.3f, 0.3f, 1.0f);
@@ -629,8 +522,94 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 
 	}
 
-	
+	private void drawThrowers(){
+		/* 1 */
+		ModelMatrix.main.pushMatrix();
+		ModelMatrix.main.addTranslation(1.5f, 0.5f, -6);
+		ModelMatrix.main.addRotationY(-85);
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, camo);
+			ModelMatrix.main.popMatrix();
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addTranslation(0, 0.4f, 0);
+				ModelMatrix.main.addRotationX(35);
+				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, camo);
+			ModelMatrix.main.popMatrix();
+		
+		ModelMatrix.main.popMatrix();
+		
+		/* 2 */
+		ModelMatrix.main.pushMatrix();
+		ModelMatrix.main.addTranslation(13, 0.5f, -6);
+		ModelMatrix.main.addRotationY(85);
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, camo);
+			ModelMatrix.main.popMatrix();
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addTranslation(0, 0.4f, 0);
+				ModelMatrix.main.addRotationX(35);
+				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, camo);
+			ModelMatrix.main.popMatrix();
+		
+		ModelMatrix.main.popMatrix();
+		
+		/* 3 */
+		ModelMatrix.main.pushMatrix();
+		ModelMatrix.main.addTranslation(7, 0.5f, -13);
+		ModelMatrix.main.addRotationY(180);
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, camo);
+			ModelMatrix.main.popMatrix();
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addTranslation(0, 0.4f, 0);
+				ModelMatrix.main.addRotationX(35);
+				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, camo);
+			ModelMatrix.main.popMatrix();
+		
+		ModelMatrix.main.popMatrix();
+		
+		/* 4 */
+		ModelMatrix.main.pushMatrix();
+		ModelMatrix.main.addTranslation(6, 0.1f, -4);
+		ModelMatrix.main.addRotationY(0);
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addScale(0.5f, 0.6f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, camo);
+			ModelMatrix.main.popMatrix();
+			
+			ModelMatrix.main.pushMatrix();
+				ModelMatrix.main.addTranslation(0, 0.4f, 0);
+				ModelMatrix.main.addRotationX(35);
+				ModelMatrix.main.addScale(0.5f, 0.2f, 0.5f);
+				shader.setModelMatrix(ModelMatrix.main.getMatrix());
+				BoxGraphic.drawSolidCube(shader, camo);
+			ModelMatrix.main.popMatrix();
+		
+		ModelMatrix.main.popMatrix();
+		
+	}
 
+	
 	@Override
 	public boolean keyDown(int keycode) {
 		return false;
