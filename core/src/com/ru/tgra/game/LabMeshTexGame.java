@@ -33,6 +33,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 	private float leftAngle;
 	private float upAngle;
 	private float reloadAngle;
+	private float sunRise;
 	
 	public static int colorLoc;
 
@@ -66,6 +67,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 		reloadAngle = 0;
 		reloadTime = 0;
 		ammo = 2;
+		sunRise=0;
 		
 		r = new Random();
 		
@@ -198,8 +200,8 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			thrower.dispose();
 			Gdx.app.exit();
 		}
-		float changeX = -0.2f * Gdx.input.getDeltaX();
-		float changeY = -0.2f * Gdx.input.getDeltaY();
+		float changeX = -0.1f * Gdx.input.getDeltaX();
+		float changeY = -0.1f * Gdx.input.getDeltaY();
 		leftAngle += changeX;
 		
 		if(upAngle + changeY <= 70 && upAngle + changeY >= -85){
@@ -329,8 +331,23 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 
 			float s = (float)Math.sin((angle / 2.0) * Math.PI / 180.0);
 			float c = (float)Math.cos((angle / 2.0) * Math.PI / 180.0);
+			
+			ModelMatrix.main.pushMatrix();
+			sunRise%=360;
+			if(sunRise > 180){
+				sunRise += 0.5f;
+			}
+			else{
+				sunRise += 0.025f;
+			}
+			ModelMatrix.main.addRotationX(sunRise);
+			ModelMatrix.main.addTranslation(0, 0, -20);
+			float x1 =ModelMatrix.main.getOrigin().x;
+			float y1 =ModelMatrix.main.getOrigin().y;
+			float z1 =ModelMatrix.main.getOrigin().z;
+			shader.setLightPosition(x1,y1, z1, 1.0f);
+			ModelMatrix.main.popMatrix();
 
-			shader.setLightPosition(0.0f + c * 3.0f, 5.0f, 0.0f + s * 3.0f, 1.0f);
 			//shader.setLightPosition(3.0f, 4.0f, 0.0f, 1.0f);
 			//shader.setLightPosition(cam.eye.x, cam.eye.y, cam.eye.z, 1.0f);
 
@@ -338,24 +355,24 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			float s2 = Math.abs((float)Math.sin((angle / 1.312) * Math.PI / 180.0));
 			float c2 = Math.abs((float)Math.cos((angle / 1.312) * Math.PI / 180.0));
 
-			shader.setSpotDirection(s2, -0.3f, c2, 0.0f);
-			//shader.setSpotDirection(-cam.n.x, -cam.n.y, -cam.n.z, 0.0f);
+			//shader.setSpotDirection(cam.eye.x, cam.eye.y,cam.eye.z-2, 0.0f);
+			shader.setSpotDirection(8, 0, -8, 1);
 			shader.setSpotExponent(0.0f);
-			shader.setConstantAttenuation(1.0f);
+			shader.setConstantAttenuation(0.7f);
 			shader.setLinearAttenuation(0.00f);
 			shader.setQuadraticAttenuation(0.00f);
 
 			//shader.setLightColor(s2, 0.4f, c2, 1.0f);
-			shader.setLightColor(1.0f, 1.0f, 1.0f, 1.0f);
+			shader.setLightColor(0.7f, 0.7f, 0.5f, 1.0f);
 			
-			shader.setGlobalAmbient(0.3f, 0.3f, 0.3f, 1);
+			//shader.setGlobalAmbient(0.4f, 0.4f, 0.4f, 1);
 
 			//shader.setMaterialDiffuse(s, 0.4f, c, 1.0f);
 			shader.setMaterialDiffuse(1.0f, 1.0f, 1.0f, 1.0f);
 			shader.setMaterialSpecular(1.0f, 1.0f, 1.0f, 1.0f);
 			//shader.setMaterialSpecular(0.0f, 0.0f, 0.0f, 1.0f);
 			shader.setMaterialEmission(0, 0, 0, 1);
-			shader.setShininess(50.0f);
+			shader.setShininess(10.0f);
 			maze.drawMaze();
 			/* Reticle */
 			ModelMatrix.main.pushMatrix();
@@ -503,7 +520,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			
 			drawThrowers();
 			
-			shader.setGlobalAmbient(0.2f, 0.2f, 0.0f, 1);
+			shader.setGlobalAmbient(0.2f, 0.2f, 0.2f, 1);
 			shader.setMaterialDiffuse(0.3f, 0.3f, 0.3f, 1.0f);
 			shader.setMaterialSpecular(1.0f, 1.0f, 1.0f, 1.0f);
 			shader.setMaterialEmission(0, 0, 0, 1);
