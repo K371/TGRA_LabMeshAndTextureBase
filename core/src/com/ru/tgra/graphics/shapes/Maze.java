@@ -63,6 +63,10 @@ public class Maze {
 		cells[10][2].northWall = true;
 		cells[10][2].eastWall = true;
 		cells[9][2].eastWall = true;
+
+		cells[12][2].northWall = true;
+		cells[12][2].eastWall = true;
+		cells[11][2].eastWall = true;
 		
 
 	}
