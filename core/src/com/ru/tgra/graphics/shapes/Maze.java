@@ -37,6 +37,9 @@ public class Maze {
 					if(j == height-1){
 						cells[i][j].northWall=true;
 					}
+					if(j == 3){
+						cells[i][j].northWall = true;
+					}
 				
 			}
 		}

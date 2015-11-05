@@ -47,7 +47,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 	
 	private float fov = 110.0f;
 
-	private Texture tex, sky;
+	private Texture tex, sky, marked;
 	
 	Random rand = new Random();
 	
@@ -60,6 +60,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 	private Sound clayBreak;
 	private Sound thrower;
 	private Sound reload;
+	
 	Random r;
 	
 	MeshModel model, shotgun;
@@ -93,6 +94,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 
 		tex = new Texture(Gdx.files.internal("textures/dice.png"));
 		sky = new Texture(Gdx.files.internal("textures/y.png"));
+		marked = new Texture(Gdx.files.internal("textures/fencemarked.jpg"));
 		
 		maze = new Maze(15, 15);
 
@@ -241,6 +243,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			projectile.setRotation(-85-r.nextFloat()*10);
 			projectile.setPigeon(true);
 			projectiles.add(projectile);
+			thrower.setVolume(thrower.play(), 0.1f);
 			
 		}
 		
@@ -255,6 +258,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			projectile.setRotation(85-r.nextFloat()*10);
 			projectile.setPigeon(true);
 			projectiles.add(projectile);
+			thrower.setVolume(thrower.play(), 0.1f);
 			
 		}
 		
@@ -267,6 +271,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			projectile.setRotation(-180-r.nextFloat()*10);
 			projectile.setPigeon(true);
 			projectiles.add(projectile);
+			thrower.setVolume(thrower.play(), 0.05f);
 			
 		}
 		
@@ -279,6 +284,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 			projectile.setRotation(25-r.nextInt(50));
 			projectile.setPigeon(true);
 			projectiles.add(projectile);
+			thrower.setVolume(thrower.play(), 0.15f);
 			
 		}
 		
@@ -507,7 +513,7 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 				}else{
 					ModelMatrix.main.addRotationX(reloadAngle++);
 				}
-				ModelMatrix.main.addTranslation(0.05f, -0.2f, 0.15f);
+				ModelMatrix.main.addTranslation(0.05f, -0.22f, 0.15f);
 				ModelMatrix.main.addRotationY(180);
 				
 				ModelMatrix.main.addScale(0.15f, 0.15f, 0.3f);
@@ -585,12 +591,24 @@ public class LabMeshTexGame extends ApplicationAdapter implements InputProcessor
 				}
 			}
 			
+			//Sky
 			ModelMatrix.main.pushMatrix();
 			ModelMatrix.main.addTranslation(7, 0, -7);
 			ModelMatrix.main.addScale(100, 100f, 100f);
 			shader.setModelMatrix(ModelMatrix.main.getMatrix());
 			BoxGraphic.drawSolidCube(shader, sky);
 			ModelMatrix.main.popMatrix();
+			
+			
+			//Tutorial
+			ModelMatrix.main.pushMatrix();
+			ModelMatrix.main.addTranslation(1.6f, 1, -2.9f);
+			ModelMatrix.main.addRotationY(90);
+			ModelMatrix.main.addScale(0.01f, 0.75f, 0.75f);
+			shader.setModelMatrix(ModelMatrix.main.getMatrix());
+			BoxGraphic.drawSolidCube(shader, marked);
+			ModelMatrix.main.popMatrix();
+			
 			
 			shader.setGlobalAmbient(0.2f, 0.2f, 0.0f, 1);
 			shader.setMaterialDiffuse(0.3f, 0.3f, 0.3f, 1.0f);
